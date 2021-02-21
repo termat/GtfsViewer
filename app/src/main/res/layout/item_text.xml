@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:background="@drawable/color_from_press_state"
+        android:clickable="true"
+        android:baselineAligned="true"
+        android:layout_gravity="left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:padding="8dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/icon_search_solid" />
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_margin="0dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:textSize="16dp"
+        android:textColor="#000" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/item_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:padding="8dp"
+        android:background="@null"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:drawableRight="@drawable/icon_excec" />
+</FrameLayout>

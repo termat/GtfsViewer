@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5273D5</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#4169e1</color>
+    <color name="walkColor">#2e8b57</color>
+    <color name="busColor">#ff8C00</color>
+    <color name="subwayColor">#ff69b4</color>
+    <color name="separate_line">#aaaaaa</color>
+    <color name="town_search_color">#ffdab9</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#dddddd</color>
+</resources>
