@@ -12,7 +12,7 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="current_location">Lat: %1$f Long: %2$f</string>
-    <string name="access_token">pk.eyJ1IjoidGVybWF0IiwiYSI6ImNqdXBmYXk1aDBwMnI0MW8xNXZ3dzVkOGUifQ.8nBCHZrBDS50yJbykEE4Sg</string>
+    <string name="access_token">******</string>
     <string name="geocorder">https://msearch.gsi.go.jp/address-search/AddressSearch?q=</string>
     <string name="user_location_permission_explanation">本アプリは位置情報の取得が必要です。</string>
     <string name="user_location_permission_not_granted">位置情報へのアクセスが許可されていません。</string>
