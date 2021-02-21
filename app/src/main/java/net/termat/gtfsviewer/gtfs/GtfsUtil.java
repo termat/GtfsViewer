@@ -175,4 +175,28 @@ public class GtfsUtil {
         }
         return ret;
     }
+
+    public static String getStopID(List<GStopTime> gs,Map<String,GStop> map,double lat,double lon){
+        int n=gs.size();
+        double min=1e10;
+        String ret="";
+        for(int i=1;i<n;i++){
+            GStop g1=map.get(gs.get(i-1).stop_id);
+            GStop g2=map.get(gs.get(i).stop_id);
+            double d=dist(g1,lat,lon)+dist(g2,lat,lon);
+            if(d<min){
+                min=d;
+                ret=g1.stop_id;
+            }
+        }
+        return ret;
+    }
+
+    private static double dist(GStop g,double lat,double lon){
+        double la=g.stop_lat;
+        double lo=g.stop_lon;
+        double x=(lon-lo);
+        double y=(lat-la);
+        return Math.sqrt(x*x+y*y);
+    }
 }

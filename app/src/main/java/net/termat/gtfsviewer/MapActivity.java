@@ -282,18 +282,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                 String trip_id=obj.get("trip_id").getAsString();
                                 String stop_id=obj.get("stop_id").getAsString();
                                 List<GStopTime> gt=gtfs.getStoptimeAtTrip(gview.data_id,trip_id);
-                  Log.w("TEST","--------------->   "+feed.size());
                                 if(feed.size()==1){
                                     int s1=((Number)feed.get(0).get("stop_sequence")).intValue();
                                     int delay=((Number)feed.get(0).get("depature_delay")).intValue();
-                                    for(GStopTime t : gt){
-                                        if(t.stop_sequence==s1){
-                                            stop_id=t.stop_id;
-                                            break;
+                                    if(stop_id==null||stop_id.isEmpty()){
+                                        for(GStopTime t : gt){
+                                            if(t.stop_sequence==s1){
+                                                stop_id=t.stop_id;
+                                                break;
+                                            }
                                         }
                                     }
                                     gt=GtfsUtil.setDelay2(gt,s1,delay);
                                 }else{
+                                    if(stop_id==null||stop_id.isEmpty()){
+                                        LatLng ll=symbol.getLatLng();
+                                        stop_id=GtfsUtil.getStopID(gt,stopMap,ll.getLatitude(),ll.getLongitude());
+                                    }
                                     gt=GtfsUtil.setDelay(gt,feed);
                                 }
                                 showRoute(gt,trip_id,stop_id,symbol);
@@ -343,9 +348,32 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+    private boolean isContainStop(List<GStopTime> list,String stop_id){
+        for(GStopTime g : list){
+            if(g.stop_id.equals(stop_id))return true;
+        }
+        return false;
+    }
+
     public void showRoute(List<GStopTime> list,String trip_id,String stop_id,Symbol bus){
         man.close();
         List<Symbol> ret=new ArrayList<>();
+        if(bus!=null&&!isContainStop(list,stop_id)){
+            SymbolOptions symbolOptions2 = new SymbolOptions()
+                    .withLatLng(bus.getLatLng())
+                    .withTextField(bus.getTextField())
+                    .withData(bus.getData())
+                    .withTextColor("#000000")
+                    .withTextSize(14.0f)
+                    .withTextOffset(new Float[]{0.0f, -1.2f})
+                    .withTextJustify(TEXT_JUSTIFY_AUTO)
+                    .withTextAnchor(TEXT_ANCHOR_BOTTOM)
+                    .withIconImage(Symbols.MARKER_BUS)
+                    .withIconSize(0.9f)
+                    .withSymbolSortKey(10.0f)
+                    .withDraggable(false);
+            ret.add(symbols.create(symbolOptions2));
+        }
         for(GStopTime t :list){
             GStop st=stopMap.get(t.stop_id);
             JsonObject jsonObject = new JsonObject();
@@ -456,17 +484,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     jsonObject.addProperty("data", gson.toJson(p));
                     List<GTrip> tl=gtfs.getTrip(gview.data_id,trip_id);
                     String title=tl.get(0).trip_headsign;
-                    /*
-                    if(p!=null){
+                    if(title==null||title.isEmpty()){
                         List<Map<String,Object>> o=(List<Map<String,Object>>)p.get("stops");
                         if(o!=null&&o.size()>=2){
                             GStop s1=stopMap.get(o.get(0).get("stop_id"));
                             GStop s2=stopMap.get(o.get(o.size()-1).get("stop_id"));
-                            if(s1!=null&&s2!=null)title=s1.stop_name+"->"+s2.stop_name;
+                            if(s1!=null&&s2!=null){
+                                title=s1.stop_name+"->"+s2.stop_name;
+                            }else{
+                                title=trip_id;
+                            }
+                        }else{
+                            title=trip_id;
                         }
                     }
-                    */
-                    SymbolOptions symbolOptions = new SymbolOptions()
+                     SymbolOptions symbolOptions = new SymbolOptions()
                             .withLatLng(new LatLng(((Number)m.get("lat")).doubleValue(), ((Number)m.get("lon")).doubleValue()))
                             .withTextField(title)
                             .withData(jsonObject)
